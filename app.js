@@ -1,16 +1,18 @@
 // Подключаем необходимые библиотеки и миддлвэры
 require('dotenv').config();
 const express = require('express');
-// const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const morgan = require('morgan');
 const MongoStore = require('connect-mongo');
 const path = require('path');
 const hbs = require('hbs');
-const useErrorHandlers = require('./middlewares/error-handlers');
+const fileUpload = require('express-fileupload');
+const connectDB = require('./db/connect');
+const useErrorHandlers = require('./middlewares/errorMdw');
 const userRouter = require('./routes/userRouter');
 const indexRouter = require('./routes/indexRouter');
-const entryRouter = require('./routes/entryRouter');
+const { startTelegramBot } = require('./telegramBot/apiTelegramm');
 
 const { DBURL, PORT } = process.env;
 
@@ -21,7 +23,8 @@ app.use(morgan('dev'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(cookieParser());
+app.use(cookieParser());
+app.use(fileUpload());
 
 // создаем сессии и записываем в БД
 app.use(
@@ -37,8 +40,8 @@ app.use(
 
 // Передаем сессии на все hbs
 app.use((req, res, next) => {
-  res.locals.login = req.session?.login;
   res.locals.userId = req.session?.userId;
+  res.locals.hasAvatar = req.session?.hasAvatar;
   next();
 });
 
@@ -51,11 +54,10 @@ app.set('view engine', 'hbs');
 hbs.registerPartials(path.join(__dirname, 'views', 'partials'));
 
 // Подключаемся к БД
-require('./db/connect');
+connectDB();
 
 // Используем роуты
 app.use('/user', userRouter);
-app.use('/entry', entryRouter);
 app.use('/', indexRouter);
 
 // Если ни один из роутов не сработал, показываем ошибки
@@ -65,3 +67,6 @@ useErrorHandlers(app);
 app.listen(PORT ?? 3000, () => {
   console.log(`Server started`);
 });
+
+// Запускаем телеграм бота
+startTelegramBot();

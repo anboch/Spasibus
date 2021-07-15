@@ -1,0 +1,23 @@
+<div class='cardContainer'>
+  {{#each users}}
+    <div class='card'>
+      <div class='nameOfUser'>
+        <span>{{this.firstName}}</span>
+        <span>{{this.lastName}}</span>
+      </div>
+      <div class='imgWraper'>
+        <div class='avatarDiv'>
+          <img src='{{this.avatarHref}}' alt='' class='avatarImg' />
+        </div>
+      </div>
+      <div class='thanks'>
+        {{#each this.thanks}}
+          <div class='thank' style='background-color:{{this.thankColor}}'>
+            <span class='thankTitle'>{{this.title}}</span>
+            <span class='quantityOfThank'>{{this.quantity}}</span>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  {{/each}}
+</div>

@@ -1,16 +1,26 @@
+<script defer src='/js/header.js'></script>
 <header>
   <div class='leftSideOfHeader'>
-    <a class='logo' href='/'>Spasibus</a>
-    <span>Замечательные люди среди нас,<br />напомните им об этом!</span>
+    <a class='logo' href='/'>Спасибус</a>
+    <span class='slogan'>Замечательные люди среди нас,<br />напомните им об
+      этом!</span>
   </div>
   <div class='rightSideOfHeader'>
-    <div class='filterBtns'>
-      <button class='filterbtn'>За неделю</button>
-      <button class='filterbtn'>За месяц</button>
-      <button class='filterbtn'>За год</button>
-    </div>
-    {{#if login}}
-      <a class='headersItems' href='/account'>Личный кабинет</a>
+
+    {{#if userId}}
+      {{#if hasAvatar}}{{else}}
+        <form
+          ref='uploadForm'
+          id='addAvatarForm'
+          action='/user/addAvatar'
+          method='post'
+          encType='multipart/form-data'
+        >
+          <input class='addAvatarBtn' type='file' name='sampleFile' />
+          <input class='addAvatarBtn' type='submit' value='Добавить аватарку' />
+        </form>
+      {{/if}}
+      <a class='headersItems' href='/newThank'>Сказать спасибо</a>
       <a class='headersItems' href='/user/logout'>Выйти</a>
     {{else}}
       <a class='headersItems' href='/user/login'>Войти</a>

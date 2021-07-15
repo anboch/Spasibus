@@ -1,0 +1,37 @@
+<script defer src='/js/newThank.js'></script>
+<div class='cards'>
+  {{#each usersWithoutLoginUser}}
+    <div class='card'>
+      <div class='nameOfUser'>
+        <span>{{this.firstName}}</span>
+        <span>{{this.lastName}}</span>
+      </div>
+      <div class='imgWraper'>
+        <div class='avatarDiv'>
+          <img src='{{this.avatarHref}}' alt='' class='avatarImg' />
+        </div>
+      </div>
+      <div class='formContainer'>
+        <form class='thankTitleOptions' method='post'>
+          <label>Спасибо за то, что</label>
+          <select class='categoryOfThank' name='category'>
+            <option value='Помог_ла'>помог_ла</option>
+            <option value='Поддержал_а'>поддержал_а</option>
+            <option value='Рассмешил_а'>рассмешил_а</option>
+            <option value='Замотивировал_а'>замотивировал_а</option>
+            <option value='Дал_а полезный совет'>дал_а полезный совет</option>
+            <option value='Внимательно выслушал_а'>внимательно выслушал_а</option>
+            <option value='Дал_а конструктивную критику'>дал_а конструктивную
+              критику</option>
+          </select>
+          <input
+            type='submit'
+            value='Сказать спасибо'
+            class='newThankBtn'
+            data-userid='{{this._id}}'
+          />
+        </form>
+      </div>
+    </div>
+  {{/each}}
+</div>
